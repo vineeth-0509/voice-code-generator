@@ -1,10 +1,12 @@
 import { prisma } from "../lib/prisma";
+import { createFilesForProject } from "./file.service";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL!;
 
 export const createProjectService = async (
   userId: string,
   name: string,
   email?: string,
+  type: string = "todo"
 ) => {
   try {
 
@@ -37,6 +39,7 @@ export const createProjectService = async (
         },
       });
 
+      await createFilesForProject(project.id, type);
       return project;
     
   } catch (error) {

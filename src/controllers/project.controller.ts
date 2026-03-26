@@ -5,12 +5,12 @@ export const createProject = async (req: Request, res: Response) => {
   try {
     const userId = req.headers["x-user-id"] as string;
     const email = req.headers["x-user-email"] as string;
-    const { name } = req.body;
+    const { name, type } = req.body;
 
     if (!userId) {
       return res.status(400).json({ message: "Missing userid" });
     }
-    const project = await createProjectService(userId, name, email);
+    const project = await createProjectService(userId, name, email, type);
     res.status(201).json(project);
   } catch (error: any) {
     res.status(500).json({
