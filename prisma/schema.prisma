@@ -29,11 +29,20 @@ model Project {
 }
 
 model File {
-  id        String  @id @default(uuid())
-  name      String
-  path      String
+  id           String        @id @default(uuid())
+  name         String
+  path         String
+  content      String
+  projectId    String
+  project      Project       @relation(fields: [projectId], references: [id])
+  createdAt    DateTime      @default(now())
+  fileVersions FileVersion[]
+}
+
+model FileVersion {
+  id        String   @id @default(uuid())
+  fileId    String
+  file      File     @relation(fields: [fileId], references: [id])
   content   String
-  projectId String
-  project   Project @relation(fields: [projectId], references: [id])
   createdAt DateTime @default(now())
 }
