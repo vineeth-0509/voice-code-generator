@@ -5,6 +5,7 @@ import {
 } from "../services/project.service";
 import { extractAppDetails } from "../services/ai.service";
 import { updateFilesWithAI } from "../services/ai-update.service";
+import {prisma} from "../lib/prisma";
 
 export const createProject = async (req: Request, res: Response) => {
   try {
@@ -78,3 +79,19 @@ export const updateProjectWithAI = async (req: Request, res: Response) => {
     });
   }
 };
+
+
+
+export const getProjectFiles = async(req:Request, res:Response) =>{
+  try {
+    const projectId = req.params.projectId as string;
+    const files = await prisma.file.findMany({
+      where:{projectId}
+    })
+    res.json({files});
+  } catch (error) {
+    res.status(500).json({
+      message:"Failed to fetch files"
+    })
+  }
+}
